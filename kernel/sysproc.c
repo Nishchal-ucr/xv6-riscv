@@ -6,6 +6,8 @@
 #include "spinlock.h"
 #include "proc.h"
 
+uint64 global_sys_calls_counter = 0;
+
 uint64
 sys_exit(void)
 {
@@ -88,4 +90,43 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+uint64 sys_sysinfo(void)
+{
+  int n;
+  argint(0, &n);
+  return get_sysinfo(n,global_sys_calls_counter);
+}
+
+
+uint64
+sys_procinfo(void)
+{
+  uint64 pinfo_pointer;
+  argaddr(0, &pinfo_pointer);
+  return get_procinfo(pinfo_pointer);
+}
+uint64 sys_hello(void) // hello syscall definition
+{
+  int n;
+  argint(0, &n);
+  print_hello(n);
+  return 0;
+}
+  
+// prints, for each process:
+// 1) PID,
+// 2) name in a parenthesis,
+// 3) the ticket value, and,
+// 4) the number of times it has been scheduled to run
+int sys_sched_statistics(void)
+{
+return sched_statistics();
+}
+// sets the caller process’s ticket value to the given parameter.
+int sys_sched_tickets(int n)
+{
+argint(0, &n);
+return sched_tickets(n);
 }

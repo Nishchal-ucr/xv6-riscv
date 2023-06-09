@@ -104,4 +104,10 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  int syscall_count;        // Number of system calls made
+
+  int tickets; // The ticket value
+  int stride; // The stride value for this process
+  int pass; // The pass value for this process
+  int ticks; // The number of times process has been scheduled to run
 };

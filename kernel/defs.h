@@ -9,6 +9,13 @@ struct sleeplock;
 struct stat;
 struct superblock;
 
+// Structure of process_info
+struct pinfo {
+int ppid;
+int syscall_count;
+int page_usage;
+};
+
 // bio.c
 void            binit(void);
 struct buf*     bread(uint, uint);
@@ -63,6 +70,8 @@ void            ramdiskrw(struct buf*);
 void*           kalloc(void);
 void            kfree(void *);
 void            kinit(void);
+// function to free memory
+int             get_free_memory(void);
 
 // log.c
 void            initlog(int, struct superblock*);
@@ -106,6 +115,14 @@ void            yield(void);
 int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
 int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
+void            print_hello(int); //hello
+// definition of sysinfo syscall 
+int             get_sysinfo(uint64, uint64);
+// definition of procinfo syscall
+int             get_procinfo(uint64 addr);
+
+int             sched_statistics(void);
+int             sched_tickets(int);
 
 // swtch.S
 void            swtch(struct context*, struct context*);
